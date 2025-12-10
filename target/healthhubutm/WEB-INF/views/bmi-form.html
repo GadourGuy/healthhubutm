@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>HealthHub@UTM : BMI Form</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f6f8fb;
+    margin: 0;
+    padding: 40px;
+  }
+  .card {
+    max-width: 500px;
+    margin: auto;
+    background: #fff;
+    padding: 20px 24px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  }
+  h1 {
+    text-align: center;
+    font-size: 1.4em;
+    color: #333;
+  }
+  label {
+    display: block;
+    margin: 10px 0 4px;
+    font-weight: bold;
+  }
+  input[type=text],
+  input[type=number] {
+    width: 100%;
+    padding: 6px 8px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .gender, .interests {
+    margin: 8px 0 16px;
+  }
+  .gender label,
+  .interests label {
+    font-weight: normal;
+    display: inline-block;
+    margin-right: 10px;
+  }
+  button {
+    display: block;
+    width: 100%;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+  }
+  button:hover {
+    background-color: #0056b3;
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <h1>HealthHub@UTM</h1>
+
+  <form th:action="@{/bmi}" method="post">
+
+    <label>ID</label>
+    <input type="text" name="id" required>
+
+    <label>Name</label>
+    <input type="text" name="name" required>
+
+    <label>Year of Birth</label>
+    <input type="number" name="yob" min="1900" max="2035" required>
+
+    <div class="row">
+      <div>
+        <label>Height (m)</label>
+        <input type="number" name="height" step="0.01" min="0.5" max="2.5" required>
+      </div>
+      <div>
+        <label>Weight (kg)</label>
+        <input type="number" name="weight" step="0.1" min="20" max="300" required>
+      </div>
+    </div>
+
+    <div class="gender">
+      <label>Gender</label>
+      <label><input type="radio" name="gender" value="Male" required> Male</label>
+      <label><input type="radio" name="gender" value="Female"> Female</label>
+    </div>
+
+    <div class="interests">
+      <label>Interests</label><br>
+      <label><input type="checkbox" name="interest" value="Entertainment"> Entertainment</label><br>
+      <label><input type="checkbox" name="interest" value="Sports"> Sports</label><br>
+      <label><input type="checkbox" name="interest" value="Travel"> Travel</label><br>
+      <label><input type="checkbox" name="interest" value="Business"> Business</label><br>
+      <label><input type="checkbox" name="interest" value="Technology"> Technology</label><br>
+    </div>
+
+    <button type="submit">Submit</button>
+
+  </form>
+</div>
+
+</body>
+</html>
