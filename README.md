@@ -1,6 +1,6 @@
 
 
-**HealthHub@UTM**
+## HealthHub@UTM
 
 A full-stack web application for managing university health and fitness activities, developed as part of **Assignment #2** for internet programming project. This project upgrades the legacy Servlet/JSP system into a **Spring MVC** architecture using **Thymeleaf** for the view layer and **Hibernate** for the persistence layer.
 
