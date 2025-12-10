@@ -1,6 +1,6 @@
 
-````markdown
-# HealthHub@UTM
+
+**# HealthHub@UTM**
 
 A full-stack web application for managing university health and fitness activities, developed as part of **Assignment #2** for internet programming project. This project upgrades the legacy Servlet/JSP system into a **Spring MVC** architecture using **Thymeleaf** for the view layer and **Hibernate** for the persistence layer.
 
@@ -108,7 +108,7 @@ git clone [https://github.com/YOUR_USERNAME/HealthHub-UTM-SpringMVC.git](https:/
 
 This project is for academic purposes under **Universiti Teknologi Malaysia (UTM)**.
 
-```
+
 
 ***
 
