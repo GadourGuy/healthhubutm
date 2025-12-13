@@ -1,11 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Header | UTMHealthHub</title>
+    <style>
+
+        .utm-header {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            padding: 18px 40px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.15);
+        }
+        
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header-title {
+            color: white;
+            font-size: 28px;
+            font-weight: 700;
+            text-decoration: none;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 5px 0;
+        }
+        
+        .header-title:hover {
+            transform: translateY(-2px);
+            text-shadow: 0 2px 10px rgba(255, 255, 255, 0.3);
+        }
+        
+        .header-nav {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .header-link {
+            color: white;
+            text-decoration: none;
+            font-size: 17px;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            padding: 8px 0;
+            position: relative;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            letter-spacing: 0.3px;
+        }
+
+        .header-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 3px;
+            background: white;
+            border-radius: 2px;
+            transform: translateX(-50%);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .header-link:hover {
+            transform: translateY(-3px);
+            color: rgba(255, 255, 255, 0.95);
+        }
+        
+        .header-link:hover::after {
+            width: 100%;
+        }
+
+
+        @media (max-width: 768px) {
+            .utm-header {
+                padding: 15px 20px;
+            }
+            
+            .header-container {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            .header-nav {
+                gap: 25px;
+            }
+            
+            .header-title {
+                font-size: 26px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header-nav {
+                gap: 20px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .header-title {
+                font-size: 24px;
+            }
+            
+            .header-link {
+                font-size: 16px;
+            }
+        }
+    </style>
 </head>
 <body>
-	<h1>Header</h1>
+    <header class="utm-header">
+        <div class="header-container">
+            <a href="" class="header-title">UTMHealthHub</a>
+            <nav class="header-nav">
+                <a href="" class="header-link active">Home</a>
+                <a href="" class="header-link">Contact</a>
+                <a href="" class="header-link">About Us</a>
+            </nav>
+        </div>
+    </header>
 </body>
 </html>

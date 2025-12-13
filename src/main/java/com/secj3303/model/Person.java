@@ -5,7 +5,6 @@ public class Person {
     private int yob;
     private double weight;
     private double height;
-    // these values is to get the data from the database
     private double bmi;
     private String category;
     private int id;
@@ -20,6 +19,7 @@ public class Person {
         this.weight = weight;
         this.height = height;
         this.interest = interest;
+        calculateBmi();
     }
 
     public String getName() {
@@ -73,7 +73,7 @@ public class Person {
     }
 
     public double getBmi() {
-        return weight / Math.pow(height, 2);
+        return bmi;
     }
 
     public void setId(int id) {
@@ -87,7 +87,12 @@ public class Person {
         return category;
     }
 
-    
+    //added to correct logic
+    private void calculateBmi() {
+            this.bmi = weight / Math.pow(height, 2);
+            categorize();
+    }
+
     public void categorize() {
         if (bmi < 18.5) {
             category = "Underweight";

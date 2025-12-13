@@ -1,11 +1,495 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Results | UTMHealthHub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+ 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+        
+        body {
+            min-height: 100vh;
+            background-color: #f5f7fa;
+        }
+        
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .page-header h1 {
+            font-size: 36px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        .page-header p {
+            color: #666;
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+
+        .current-result-card {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            margin-bottom: 50px;
+            border-left: 5px solid #2575fc;
+        }
+        
+        .current-result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .current-result-header h2 {
+            font-size: 28px;
+            color: #2c3e50;
+        }
+        
+        .bmi-main-display {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .bmi-value-box {
+            text-align: center;
+            padding: 25px;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            border-radius: 12px;
+            color: white;
+        }
+        
+        .bmi-value-label {
+            font-size: 18px;
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+        
+        .bmi-value-number {
+            font-size: 64px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .bmi-category {
+            font-size: 22px;
+            font-weight: 600;
+            padding: 8px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            display: inline-block;
+        }
+        
+        .user-details {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+        }
+        
+        .user-details h3 {
+            font-size: 20px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .detail-label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .detail-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .history-section {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .section-header h2 {
+            font-size: 28px;
+            color: #2c3e50;
+        }
+        
+        .records-count {
+            background: #e9ecef;
+            color: #666;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+        
+        .history-table thead {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+        }
+        
+        .history-table th {
+            padding: 18px 20px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        .history-table tbody tr {
+            border-bottom: 1px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+        
+        .history-table tbody tr:hover {
+            background-color: #f8f9fa;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .history-table td {
+            padding: 18px 20px;
+            color: #333;
+            font-size: 15px;
+        }
+        
+        .category-badge {
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            display: inline-block;
+        }
+        
+        .category-underweight {
+            background-color: #ffc107;
+            color: #333;
+        }
+        
+        .category-normal {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .category-overweight {
+            background-color: #fd7e14;
+            color: white;
+        }
+        
+        .category-obese {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .actions-cell {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .action-btn {
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: none;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .action-view {
+            background: #e9ecef;
+            color: #333;
+        }
+        
+        .action-delete {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+        
+        .empty-state i {
+            font-size: 64px;
+            color: #6c757d;
+            margin-bottom: 20px;
+        }
+        
+        .empty-state h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #495057;
+        }
+        
+        .empty-state p {
+            font-size: 16px;
+            max-width: 500px;
+            margin: 0 auto 30px;
+            line-height: 1.6;
+        }
+        
+        .btn-new-calculation {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-new-calculation:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(37, 117, 252, 0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 20px;
+            }
+            
+            .page-header h1 {
+                font-size: 28px;
+            }
+            
+            .page-header p {
+                font-size: 16px;
+            }
+            
+            .current-result-card, .history-section {
+                padding: 25px;
+            }
+            
+            .current-result-header, .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .history-table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .bmi-value-number {
+                font-size: 48px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .bmi-main-display {
+                grid-template-columns: 1fr;
+            }
+            
+            .detail-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .actions-cell {
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+        
+        .thymeleaf-data {
+            font-weight: 600;
+            color: #2575fc;
+        }
+    </style>
 </head>
 <body>
-	<h1>Member Dashboard</h1>
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1>Your BMI Results & History</h1>
+            <p>View your current BMI calculation and track your health progress over time</p>
+        </div>
+        
+        <!-- Current BMI Result (Thymeleaf) -->
+        <div class="current-result-card" th:if="${currentBmi != null}">
+            <div class="current-result-header">
+                <h2>Current BMI Result</h2>
+                <div class="timestamp" th:text="${#dates.format(currentBmi.calculatedDate, 'MMMM dd, yyyy')}">
+                </div>
+            </div>
+            
+            <div class="bmi-main-display">
+                <div class="bmi-value-box">
+                    <div class="bmi-value-label">Your BMI Score</div>
+                    <div class="bmi-value-number" th:text="${currentBmi.bmiValue}"></div>
+                    <div class="bmi-category" 
+                         th:classappend="'category-' + ${currentBmi.category.toLowerCase().replace(' ', '')}"
+                         th:text="${currentBmi.category}">
+                    </div>
+                </div>
+                
+                <div class="user-details">
+                    <h3>Calculation Details</h3>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <span class="detail-label">Name</span>
+                            <span class="detail-value thymeleaf-data" th:text="${currentBmi.name}"></span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Age</span>
+                            <span class="detail-value thymeleaf-data" th:text="${currentBmi.age}"></span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Height</span>
+                            <span class="detail-value thymeleaf-data" 
+                                  th:text="${currentBmi.height} + ' ' + ${currentBmi.heightUnit}">
+                            </span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Weight</span>
+                            <span class="detail-value thymeleaf-data" 
+                                  th:text="${currentBmi.weight} + ' ' + ${currentBmi.weightUnit}">
+                            </span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Health Interests</span>
+                            <span class="detail-value thymeleaf-data" 
+                                  th:text="${#strings.listJoin(currentBmi.interests, ', ')}">
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- No Current Result Message -->
+        <div class="current-result-card" th:unless="${currentBmi != null}">
+            <div class="empty-state">
+                <i class="fas fa-calculator"></i>
+                <h3>No BMI Calculation Found</h3>
+                <p>You haven't calculated your BMI yet. Start by calculating your BMI to see your results here.</p>
+                <a href="/bmi" class="btn-new-calculation">
+                    <i class="fas fa-calculator"></i> Calculate BMI Now
+                </a>
+            </div>
+        </div>
+        
+        <!-- BMI History Section -->
+        <div class="history-section">
+            <div class="section-header">
+                <h2>BMI Calculation History</h2>
+                <div class="records-count">
+                    <span th:text="${#lists.size(bmiHistory)}">0</span> records found
+                </div>
+            </div>
+            
+            <!-- If there is history -->
+            <table class="history-table" th:if="${not #lists.isEmpty(bmiHistory)}">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>BMI Score</th>
+                        <th>Category</th>
+                        <th>Height</th>
+                        <th>Weight</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="record, status : ${bmiHistory}">
+                        <td th:text="${#dates.format(record.calculatedDate, 'MMM dd, yyyy')}"></td>
+                        <td>
+                            <strong th:text="${record.bmiValue}"></strong>
+                        </td>
+                        <td>
+                            <span class="category-badge" 
+                                  th:classappend="'category-' + ${record.category.toLowerCase().replace(' ', '')}"
+                                  th:text="${record.category}">
+                            </span>
+                        </td>
+                        <td th:text="${record.height} + ' ' + ${record.heightUnit}"></td>
+                        <td th:text="${record.weight} + ' ' + ${record.weightUnit}"></td>
+                        <td class="actions-cell">
+                            <button class="action-btn action-view">View</button>
+                            <button class="action-btn action-delete">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <!-- Empty state if no history -->
+            <div class="empty-state" th:if="${#lists.isEmpty(bmiHistory)}">
+                <i class="fas fa-chart-line"></i>
+                <h3>No BMI History Found</h3>
+                <p>You haven't calculated your BMI yet. Start by calculating your first BMI to track your health progress.</p>
+                <a href="/bmi" class="btn-new-calculation">
+                    <i class="fas fa-calculator"></i> Calculate BMI
+                </a>
+            </div>
+        </div>
+    </main>
 </body>
 </html>

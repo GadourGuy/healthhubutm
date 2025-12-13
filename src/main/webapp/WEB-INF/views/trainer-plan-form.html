@@ -1,11 +1,286 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Fitness Program | UTMHealthHub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Reset and Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+        
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            padding: 20px;
+        }
+        
+        /* Program Form Container */
+        .program-container {
+            width: 100%;
+            max-width: 550px;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            padding: 40px;
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo i {
+            font-size: 48px;
+            color: #2575fc;
+            margin-bottom: 15px;
+        }
+        
+        .logo h1 {
+            font-size: 32px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .logo p {
+            color: #666;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+        
+        .input-with-icon {
+            position: relative;
+        }
+        
+        .input-with-icon i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #777;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 15px 15px 15px 45px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: #2575fc;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(37, 117, 252, 0.1);
+        }
+        
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+            padding-top: 15px;
+            line-height: 1.5;
+        }
+        
+        /* Number Input Specific */
+        .number-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        /* Button Styles */
+        .btn-create {
+            background: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%);
+            color: white;
+            border: none;
+            padding: 16px;
+            width: 100%;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        .btn-create:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(37, 117, 252, 0.4);
+        }
+        
+        .btn-create:active {
+            transform: translateY(0);
+        }
+        
+        /* Required Indicator */
+        .required {
+            color: #dc3545;
+        }
+        
+        /* Form Note */
+        .form-note {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
+        /* Currency Symbol */
+        .currency-symbol {
+            position: absolute;
+            left: 45px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #777;
+            font-weight: 500;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .program-container {
+                padding: 30px 25px;
+            }
+            
+            .logo h1 {
+                font-size: 28px;
+            }
+            
+            .logo i {
+                font-size: 40px;
+            }
+            
+            .number-inputs {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .program-container {
+                padding: 25px 20px;
+            }
+            
+            .logo h1 {
+                font-size: 24px;
+            }
+            
+            .logo i {
+                font-size: 36px;
+            }
+        }
+        
+        /* Animations */
+        @keyframes inputFocus {
+            from {
+                box-shadow: 0 0 0 0 rgba(37, 117, 252, 0.1);
+            }
+            to {
+                box-shadow: 0 0 0 3px rgba(37, 117, 252, 0.1);
+            }
+        }
+        
+        .form-control:focus {
+            animation: inputFocus 0.3s ease-out;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(37, 117, 252, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(37, 117, 252, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(37, 117, 252, 0);
+            }
+        }
+        
+        .btn-create:focus {
+            animation: pulse 1.5s infinite;
+        }
+    </style>
 </head>
 <body>
-	<h1>Trainer Plan Form</h1>
+    <div class="program-container">
+        <div class="logo">
+            <i class="fas fa-dumbbell"></i>
+            <h1>Create Fitness Program</h1>
+            <p>Design a new fitness program for trainees</p>
+        </div>
+        
+        <form id="program-form" action="" method="POST">
+            <div class="form-group">
+                <label for="name">Program Name <span class="required">*</span></label>
+                <div class="input-with-icon">
+                    <i class="fas fa-tag"></i>
+                    <input type="text" id="name" name="name" class="form-control" 
+                           placeholder="Enter program name" required
+                           maxlength="100">
+                </div>
+                <div class="form-note">Maximum 100 characters</div>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Program Description</label>
+                <div class="input-with-icon">
+                    <i class="fas fa-align-left"></i>
+                    <textarea id="description" name="description" class="form-control" 
+                              placeholder="Describe the program details, goals, and benefits"
+                              maxlength="500"></textarea>
+                </div>
+                <div class="form-note">Maximum 500 characters</div>
+            </div>
+
+            <div class="number-inputs">
+                <div class="form-group">
+                    <label for="durationWeeks">Duration (Weeks) <span class="required">*</span></label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-calendar-week"></i>
+                        <input type="number" id="durationWeeks" name="durationWeeks" class="form-control" 
+                               placeholder="e.g., 12" min="1" max="104" required>
+                    </div>
+                    <div class="form-note">1 to 104 weeks</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="monthlyFee">Monthly Fee (RM) <span class="required">*</span></label>
+                    <div class="input-with-icon">
+                        <span class="currency-symbol">RM</span>
+                        <input type="number" id="monthlyFee" name="monthlyFee" class="form-control" 
+                               placeholder="e.g., 299.99" min="0" step="0.01" required
+                               style="padding-left: 65px;">
+                    </div>
+                    <div class="form-note">Enter amount in Ringgit Malaysia</div>
+                </div>
+            </div>
+            
+            <button type="submit" class="btn-create">
+                <i class="fas fa-plus-circle"></i> Create Program
+            </button>
+        </form>
+    </div>
 </body>
 </html>
