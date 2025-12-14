@@ -5,44 +5,53 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "HHUTM_PROGRAM")
+@Table(name = "program")
 public class Program {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @Column(name = "id")
+    private int id;
 
-    @Column(nullable = false, length = 100)
+    @Column(name = "name")
     private String name;
 
-    @Column(length = 500)
+    @Column(name = "description")
     private String description;
 
     @Column(name = "duration_weeks")
-    private Integer durationWeeks;
+    private int durationWeeks;
 
     @Column(name = "monthly_fee")
-    private Double monthlyFee;
+    private double monthlyFee;
 
+    
+    @ManyToOne
+    @JoinColumn(name = "trainer_id") 
+    private Trainer trainer;
+
+    // Constructors
     public Program() {
     }
 
-    public Program(String name, String description, Integer durationWeeks, Double monthlyFee) {
+    public Program(String name, String description, int durationWeeks, double monthlyFee) {
         this.name = name;
         this.description = description;
         this.durationWeeks = durationWeeks;
         this.monthlyFee = monthlyFee;
     }
 
-    // getters & setters
-    public Integer getId() {
+    // Getters and Setters
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -62,19 +71,28 @@ public class Program {
         this.description = description;
     }
 
-    public Integer getDurationWeeks() {
+    public int getDurationWeeks() {
         return durationWeeks;
     }
 
-    public void setDurationWeeks(Integer durationWeeks) {
+    public void setDurationWeeks(int durationWeeks) {
         this.durationWeeks = durationWeeks;
     }
 
-    public Double getMonthlyFee() {
+    public double getMonthlyFee() {
         return monthlyFee;
     }
 
-    public void setMonthlyFee(Double monthlyFee) {
+    public void setMonthlyFee(double monthlyFee) {
         this.monthlyFee = monthlyFee;
+    }
+
+
+    public Trainer getTrainer() {
+        return trainer;
+    }
+
+    public void setTrainer(Trainer trainer) {
+        this.trainer = trainer;
     }
 }

@@ -1,20 +1,51 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Header | UTMHealthHub</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org">
 <body>
-    <header th:fragment="header" class="utm-header">
-        <div class="header-container">
-            <a href="" class="header-title">UTMHealthHub</a>
-            <nav class="header-nav">
-                <a href="" class="header-link active">Home</a>
-                <a href="" class="header-link">Contact</a>
-                <a href="" class="header-link">About Us</a>
-            </nav>
-        </div>
-    </header>
+    <div th:fragment="header">
+        <style>
+            .main-header {
+                background-color: #ffffff;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+                padding: 15px 30px;
+                position: fixed;
+                top: 0;
+                width: 100%;
+                z-index: 1000;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .nav-brand {
+                font-size: 24px;
+                font-weight: bold;
+                color: #2c3e50;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                text-decoration: none;
+            }
+            .nav-brand i { color: #2ecc71; } /* Health Green */
+            .nav-links {
+                display: flex;
+                gap: 20px;
+            }
+            .nav-links a {
+                text-decoration: none;
+                color: #555;
+                font-weight: 500;
+                transition: color 0.3s;
+            }
+            .nav-links a:hover { color: #2ecc71; }
+            /* Spacer to prevent content hiding behind fixed header */
+            .header-spacer { height: 70px; } 
+        </style>
+
+        <header class="main-header">
+            <a href="/" class="nav-brand">
+                <i class="fas fa-heartbeat"></i> HealthHub
+            </a>
+        </header>
+        <div class="header-spacer"></div>
+    </div>
 </body>
 </html>

@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BMI Calculator | Health Assessment</title>
+    <title>Calculate BMI | HealthHub</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" th:href="@{/fragments/style.css}">
+    
     <style>
         * {
             margin: 0;
@@ -16,56 +16,68 @@
         
         body {
             display: flex;
-            justify-content: center;
-            align-items: center;
+            flex-direction: column;
             min-height: 100vh;
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-            padding: 20px;
+            background-color: #f4f6f9; /* Clean light gray background */
+        }
+        
+        /* Wrapper to center content nicely */
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Aligns to top with padding */
+            padding: 40px 20px;
         }
         
         .bmi-container {
             width: 100%;
-            max-width: 500px;
-            background-color: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-            overflow: hidden;
+            max-width: 600px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.05);
             padding: 40px;
+            border: 1px solid #e1e4e8;
         }
         
         .logo {
             text-align: center;
             margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #ecf0f1;
         }
         
         .logo i {
-            font-size: 48px;
-            color: #2575fc;
-            margin-bottom: 15px;
-        }
-        
-        .logo h1 {
-            font-size: 32px;
-            color: #333;
+            font-size: 40px;
+            color: #2ecc71; /* Health Green */
             margin-bottom: 10px;
         }
         
+        .logo h1 {
+            font-size: 26px;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
         .logo p {
-            color: #666;
-            font-size: 16px;
-            line-height: 1.5;
+            color: #7f8c8d;
+            font-size: 15px;
         }
         
         .form-group {
-            margin-bottom: 25px;
-            position: relative;
+            margin-bottom: 20px;
         }
         
         .form-group label {
             display: block;
             margin-bottom: 8px;
-            color: #555;
-            font-weight: 500;
+            color: #2c3e50; /* Darker text for readability */
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .required {
+            color: #e74c3c;
         }
         
         .input-with-icon {
@@ -77,231 +89,189 @@
             left: 15px;
             top: 50%;
             transform: translateY(-50%);
-            color: #777;
+            color: #bdc3c7;
         }
         
         .form-control {
             width: 100%;
-            padding: 15px 15px 15px 45px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            font-size: 16px;
+            padding: 12px 12px 12px 40px;
+            border: 1px solid #dfe6e9;
+            border-radius: 8px;
+            font-size: 14px;
             transition: all 0.3s ease;
+            background-color: #fafafa;
         }
         
         .form-control:focus {
-            border-color: #2575fc;
+            border-color: #2ecc71;
+            background-color: #fff;
             outline: none;
-            box-shadow: 0 0 0 3px rgba(37, 117, 252, 0.1);
+            box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.1);
         }
         
-        .units {
-            display: flex;
-            gap: 15px;
-            margin-top: 5px;
-        }
-        
-        .unit-option {
-            display: flex;
-            align-items: center;
-        }
-        
-        .unit-option input {
-            margin-right: 5px;
-        }
-        
+        /* Grid for Interests */
         .interests-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
+            gap: 12px;
             margin-top: 5px;
         }
         
         .interest-option {
             display: flex;
             align-items: center;
-            padding: 8px 12px;
+            padding: 10px 15px;
             background-color: #f8f9fa;
+            border: 1px solid #ecf0f1;
             border-radius: 8px;
+            cursor: pointer;
             transition: all 0.2s ease;
         }
         
         .interest-option:hover {
-            background-color: #e9ecef;
+            background-color: #e8f5e9; /* Light green hover */
+            border-color: #2ecc71;
         }
         
         .interest-option input {
-            margin-right: 8px;
+            margin-right: 10px;
+            accent-color: #2ecc71; /* Green Checkbox */
+            transform: scale(1.2);
+        }
+        
+        .interest-option label {
+            margin-bottom: 0;
+            cursor: pointer;
+            font-weight: 500;
+            color: #555;
         }
         
         .btn-submit {
-            background: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%);
+            background-color: #2ecc71; /* Green Button */
             color: white;
             border: none;
-            padding: 16px;
+            padding: 15px;
             width: 100%;
-            border-radius: 10px;
+            border-radius: 8px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 10px;
+            transition: background 0.3s ease;
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
         }
         
         .btn-submit:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(37, 117, 252, 0.4);
+            background-color: #27ae60;
+            transform: translateY(-2px);
         }
         
-        .btn-submit:active {
-            transform: translateY(0);
-        }
-        
-        /* Responsive Design */
-        @media (max-width: 480px) {
-            .bmi-container {
-                padding: 30px 25px;
-            }
-            
-            .logo h1 {
-                font-size: 28px;
-            }
-            
-            .logo i {
-                font-size: 40px;
-            }
-            
+        /* Responsive */
+        @media (max-width: 600px) {
             .interests-grid {
                 grid-template-columns: 1fr;
             }
         }
-        
-        /* Simple focus animation for inputs */
-        @keyframes inputFocus {
-            from {
-                box-shadow: 0 0 0 0 rgba(37, 117, 252, 0.1);
-            }
-            to {
-                box-shadow: 0 0 0 3px rgba(37, 117, 252, 0.1);
-            }
-        }
-        
-        .form-control:focus {
-            animation: inputFocus 0.3s ease-out;
-        }
-        
-        /* Simple pulse animation for button */
-        @keyframes pulse {
-            0% {
-                box-shadow: 0 0 0 0 rgba(37, 117, 252, 0.4);
-            }
-            70% {
-                box-shadow: 0 0 0 10px rgba(37, 117, 252, 0);
-            }
-            100% {
-                box-shadow: 0 0 0 0 rgba(37, 117, 252, 0);
-            }
-        }
-        
-        .btn-submit:focus {
-            animation: pulse 1.5s infinite;
-        }
-        
-        .required {
-            color: #dc3545;
-        }
     </style>
 </head>
 <body>
+
     <div th:replace="~{fragments/header :: header}"></div>
-    <div class="bmi-container">
-        <div class="logo">
-            <i class="fas fa-weight-scale"></i>
-            <h1>BMI Calculator</h1>
-            <p>Enter your details to calculate your Body Mass Index</p>
-        </div>
-        
-        <form id="bmi-form" action="/member/bmi" method="POST">
-            <div class="form-group">
-                <label for="name">Name <span class="required">*</span></label>
-                <div class="input-with-icon">
-                    <i class="fas fa-user"></i>
-                    <input type="text" id="name" name="name" class="form-control" 
-                           placeholder="Enter your full name" required>
-                </div>
+    
+    <div class="content-wrapper">
+        <div class="bmi-container">
+            <div class="logo">
+                <i class="fas fa-weight-scale"></i>
+                <h1>BMI Calculator</h1>
+                <p>Enter your details to generate your health report</p>
             </div>
             
-            <div class="form-group">
-                <label for="yob">Year of Birth <span class="required">*</span></label>
-                <div class="input-with-icon">
-                    <i class="fas fa-calendar"></i>
-                    <input type="number" id="yob" name="yob" class="form-control" 
-                           placeholder="e.g. 1990" min="1900" max="2024" required>
-                </div>
-            </div>
-            
-            <div class="form-group">
-                <label for="height">Height <span class="required">*</span></label>
-                <div class="input-with-icon">
-                    <i class="fas fa-ruler-vertical"></i>
-                    <input type="number" id="height" name="height" class="form-control" 
-                           placeholder="Enter height in cm" min="50" max="250" step="0.1" required>
-                </div>
-            </div>
-            
-            <div class="form-group">
-                <label for="weight">Weight <span class="required">*</span></label>
-                <div class="input-with-icon">
-                    <i class="fas fa-weight-hanging"></i>
-                    <input type="number" id="weight" name="weight" class="form-control" 
-                           placeholder="Enter weight in kg" min="20" max="300" step="0.1" required>
+            <form id="bmi-form" th:action="@{/member/bmi}" method="POST">
+                
+                <div class="form-group">
+                    <label for="name">Full Name <span class="required">*</span></label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="name" name="name" class="form-control" 
+                               placeholder="Enter your full name" required>
+                    </div>
                 </div>
                 
-            </div>
-            
-            <div class="form-group">
-                <label>Health Interests (Select all that apply)</label>
-                <div class="interests-grid">
-                    <div class="interest-option">
-                        <input type="checkbox" id="weight-loss" name="interests" value="weight-loss">
-                        <label for="weight-loss">Sport</label>
-                    </div>
-                    <div class="interest-option">
-                        <input type="checkbox" id="muscle-gain" name="interests" value="muscle-gain">
-                        <label for="muscle-gain">Travel</label>
-                    </div>
-                    <div class="interest-option">
-                        <input type="checkbox" id="fitness" name="interests" value="fitness">
-                        <label for="fitness">Stamp collecting</label>
-                    </div>
-                    <div class="interest-option">
-                        <input type="checkbox" id="nutrition" name="interests" value="nutrition">
-                        <label for="nutrition">Video games</label>
-                    </div>
-                    <div class="interest-option">
-                        <input type="checkbox" id="cardio" name="interests" value="cardio">
-                        <label for="cardio">TV and movies</label>
-                    </div>
-                    <div class="interest-option">
-                        <input type="checkbox" id="strength" name="interests" value="strength">
-                        <label for="strength">Reading</label>
-                    </div>
-                    <div class="interest-option">
-                        <input type="checkbox" id="sleep" name="interests" value="sleep">
-                        <label for="sleep">Slelf Improvement</label>
-                    </div>
-                    <div class="interest-option">
-                        <input type="checkbox" id="stress" name="interests" value="stress">
-                        <label for="stress">Social media</label>
+                <div class="form-group">
+                    <label for="yob">Year of Birth <span class="required">*</span></label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-calendar"></i>
+                        <input type="number" id="yob" name="yob" class="form-control" 
+                               placeholder="e.g. 1995" min="1900" max="2025" required>
                     </div>
                 </div>
-            </div>
-            
-            <button type="submit" class="btn-submit">
-                <i class="fas fa-calculator"></i> Calculate BMI
-            </button>
-        </form>
+                
+                <div class="form-group">
+                    <label for="height">Height <span class="required">*</span></label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-ruler-vertical"></i>
+                        <input type="number" id="height" name="height" class="form-control" 
+                               placeholder="Enter height in cm" min="50" max="250" step="0.1" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="weight">Weight <span class="required">*</span></label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-weight-hanging"></i>
+                        <input type="number" id="weight" name="weight" class="form-control" 
+                               placeholder="Enter weight in kg" min="20" max="300" step="0.1" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Health Interests (Select all that apply)</label>
+                    <div class="interests-grid">
+                        <div class="interest-option">
+                            <input type="checkbox" id="sport" name="interests" value="Sport">
+                            <label for="sport">Sport</label>
+                        </div>
+                        <div class="interest-option">
+                            <input type="checkbox" id="travel" name="interests" value="Travel">
+                            <label for="travel">Travel</label>
+                        </div>
+                        <div class="interest-option">
+                            <input type="checkbox" id="fitness" name="interests" value="Fitness">
+                            <label for="fitness">Fitness</label>
+                        </div>
+                        <div class="interest-option">
+                            <input type="checkbox" id="games" name="interests" value="Video Games">
+                            <label for="games">Video Games</label>
+                        </div>
+                        <div class="interest-option">
+                            <input type="checkbox" id="movies" name="interests" value="Movies">
+                            <label for="movies">TV & Movies</label>
+                        </div>
+                        <div class="interest-option">
+                            <input type="checkbox" id="reading" name="interests" value="Reading">
+                            <label for="reading">Reading</label>
+                        </div>
+                        <div class="interest-option">
+                            <input type="checkbox" id="improvement" name="interests" value="Self Improvement">
+                            <label for="improvement">Self Improvement</label>
+                        </div>
+                        <div class="interest-option">
+                            <input type="checkbox" id="social" name="interests" value="Social Media">
+                            <label for="social">Social Media</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-calculator"></i> Calculate BMI
+                </button>
+            </form>
+        </div>
     </div>
+
     <div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>

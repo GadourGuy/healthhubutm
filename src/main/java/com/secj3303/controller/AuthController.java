@@ -93,13 +93,13 @@ private UserDaoHibernate userDaoJdbc;
     //added to ease up on them things yeah
     private String redirectBasedOnRole(String role) {
         if ("ADMIN".equalsIgnoreCase(role)) {
-            return "redirect:/admin-dashboard";
+            return "redirect:/admin/dashboard";
         }
         else if ("TRAINER".equalsIgnoreCase(role)) {
-            return "redirect:/trainer-dashboard";
+            return "redirect:/trainer/dashboard";
         }
         else if ("MEMBER".equalsIgnoreCase(role)) {
-            return "redirect:/member-dashboard";
+            return "redirect:/member/dashboard";
         }
         else {
             return "redirect:/login";

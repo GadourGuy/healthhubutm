@@ -3,247 +3,157 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fitness Plans | UTMHealthHub</title>
-    <link rel="stylesheet" th:href="@{/fragments/style.css}">
+    <title>Browse Programs | HealthHub</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        /* Reset and Base */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', system-ui, sans-serif;
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+        
+        /* Layout Fixes for Sticky Footer */
+        body { 
+            background-color: #f4f6f9; 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+        }
+        .main-content { 
+            flex: 1; /* Pushes footer down */
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 40px 20px; 
+            width: 100%; 
         }
         
-        body {
-            min-height: 100vh;
-            background-color: #f5f7fa;
-        }
-        
-        .main-content {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-        
-        .page-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        
-        .page-header h1 {
-            font-size: 32px;
-            color: #2c3e50;
-            margin-bottom: 10px;
-        }
-        
-        .page-header p {
-            color: #666;
-            font-size: 16px;
-        }
-        
-        /* Empty State */
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        }
-        
-        .empty-state i {
-            font-size: 64px;
-            color: #adb5bd;
-            margin-bottom: 20px;
-        }
-        
-        .empty-state h3 {
-            color: #495057;
-            margin-bottom: 10px;
-            font-size: 24px;
-        }
-        
-        .empty-state p {
-            color: #6c757d;
-            max-width: 500px;
-            margin: 0 auto;
-            line-height: 1.6;
-        }
-        
-        /* Programs Grid */
-        .programs-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 30px;
-            margin-bottom: 50px;
-        }
-        
-        .program-card {
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-            border-left: 4px solid #2575fc;
-        }
-        
-        .program-header {
-            padding: 20px;
-            border-bottom: 1px solid #e9ecef;
-        }
-        
-        .program-title {
-            font-size: 20px;
-            color: #2c3e50;
-            margin-bottom: 5px;
-        }
-        
-        .program-body {
-            padding: 20px;
-        }
-        
-        .program-description {
-            color: #666;
-            line-height: 1.5;
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
-        
-        .program-details {
-            margin-bottom: 20px;
-        }
-        
-        .detail-item {
+        /* HEADER WITH BUTTON */
+        .page-header-container {
             display: flex;
             justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid #f8f9fa;
+            align-items: center;
+            margin-bottom: 40px;
+            gap: 20px;
         }
-        
-        .detail-label {
-            color: #6c757d;
-            font-size: 14px;
+
+        .page-header-text h1 { color: #2c3e50; font-size: 32px; margin-bottom: 5px; }
+        .page-header-text p { color: #7f8c8d; font-size: 16px; }
+
+        .btn-dashboard {
+            text-decoration: none;
+            background-color: white;
+            color: #7f8c8d;
+            border: 1px solid #dcdcdc;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
         }
-        
-        .detail-value {
+        .btn-dashboard:hover {
+            background-color: #f8f9fa;
             color: #2c3e50;
-            font-weight: 500;
+            border-color: #b0b0b0;
+            transform: translateY(-2px);
         }
-        
-        .detail-value.price {
-            color: #28a745;
-            font-weight: 600;
+
+        /* GRID LAYOUT */
+        .programs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
         }
-        
-        .program-footer {
-            padding: 0 20px 20px;
+
+        /* CARD STYLE */
+        .program-card {
+            background: white; border-radius: 12px; overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #e1e4e8;
+            transition: transform 0.3s ease; display: flex; flex-direction: column;
         }
+        .program-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
         
+        .card-header {
+            background-color: #e8f5e9; padding: 20px; text-align: center; border-bottom: 1px solid #c8e6c9;
+        }
+        .card-header i { font-size: 40px; color: #2ecc71; margin-bottom: 10px; }
+        .card-header h3 { color: #2c3e50; font-size: 20px; }
+
+        .card-body { padding: 25px; flex: 1; display: flex; flex-direction: column; }
+        .description { color: #7f8c8d; font-size: 14px; line-height: 1.5; margin-bottom: 20px; flex: 1; }
+        
+        .meta-info { display: flex; justify-content: space-between; margin-bottom: 25px; font-size: 14px; font-weight: 600; color: #555; }
+        .meta-item i { color: #2ecc71; margin-right: 5px; }
+
         .btn-enroll {
-            background: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 6px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            width: 100%;
-            transition: opacity 0.3s;
+            background-color: #2ecc71; color: white; border: none; padding: 12px;
+            border-radius: 8px; font-weight: 600; cursor: pointer; width: 100%;
+            transition: background 0.3s;
         }
+        .btn-enroll:hover { background-color: #27ae60; }
         
-        .btn-enroll:hover {
-            opacity: 0.9;
-        }
-        
-        .btn-enroll:disabled {
-            background: #6c757d;
-            cursor: not-allowed;
-        }
-        
-        .enrolled-badge {
-            background: #e8f5e9;
-            color: #28a745;
-            padding: 12px 20px;
-            border-radius: 6px;
-            text-align: center;
-            font-weight: 600;
-            font-size: 15px;
-        }
-        
-        /* Responsive */
+        /* EMPTY STATE */
+        .empty-state { text-align: center; grid-column: 1 / -1; padding: 50px; }
+        .empty-state i { font-size: 60px; color: #bdc3c7; margin-bottom: 20px; }
+
+        /* Mobile Responsive */
         @media (max-width: 768px) {
-            .programs-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .main-content {
-                padding: 20px;
-            }
+            .page-header-container { flex-direction: column; align-items: flex-start; }
+            .btn-dashboard { width: 100%; justify-content: center; }
         }
     </style>
 </head>
-<body> 
+<body>
+
     <div th:replace="~{fragments/header :: header}"></div>
+
     <main class="main-content">
-        <div class="page-header">
-            <h1>Fitness Programs</h1>
-            <p th:if="${not #lists.isEmpty(programs)}" th:text="'Showing ' + ${#lists.size(programs)} + ' programs'">
-                Showing X programs
-            </p>
-        </div>
-        
-        <div class="empty-state" th:if="${#lists.isEmpty(programs)}">
-            <i class="fas fa-dumbbell"></i>
-            <h3>No Fitness Programs Available</h3>
-            <p>There are currently no fitness programs in the system. Please check back later or contact an administrator.</p>
+        <div class="page-header-container">
+            <div class="page-header-text">
+                <h1>Fitness Programs</h1>
+                <p>Find the perfect plan to achieve your health goals</p>
+            </div>
+            <a th:href="@{/member/dashboard}" class="btn-dashboard">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </a>
         </div>
 
-        <div class="programs-grid" th:unless="${#lists.isEmpty(programs)}">
+        <div class="programs-grid">
             <div class="program-card" th:each="program : ${programs}">
-                <div class="program-header">
-                    <h3 class="program-title" th:text="${program.name}">Program Name</h3>
+                <div class="card-header">
+                    <i class="fas fa-dumbbell"></i>
+                    <h3 th:text="${program.name}">Program Name</h3>
                 </div>
-                
-                <div class="program-body">
-                    <p class="program-description" th:text="${program.description}">
-                        Program description from database
+                <div class="card-body">
+                    <p class="description" th:text="${program.description}">
+                        Description goes here...
                     </p>
                     
-                    <div class="program-details">
-                        <div class="detail-item">
-                            <span class="detail-label">Duration:</span>
-                            <span class="detail-value" th:text="${program.durationWeeks} + ' weeks'">
-                                12 weeks
-                            </span>
+                    <div class="meta-info">
+                        <div class="meta-item">
+                            <i class="far fa-clock"></i> 
+                            <span th:text="${program.durationWeeks} + ' Weeks'">12 Weeks</span>
                         </div>
-                        
-                        <div class="detail-item">
-                            <span class="detail-label">Monthly Fee:</span>
-                            <span class="detail-value price" th:text="'RM ' + ${program.monthlyFee}">
-                                RM 299.99
-                            </span>
+                        <div class="meta-item">
+                            <i class="fas fa-tag"></i> 
+                            <span th:text="'RM ' + ${program.monthlyFee}">RM 100</span>
                         </div>
                     </div>
-                </div>
-                
-                <div class="program-footer">
-                    <div th:if="${enrolledProgramIds != null and enrolledProgramIds.contains(program.id)}" 
-                         class="enrolled-badge">
-                        <i class="fas fa-check"></i> Already Enrolled
-                    </div>
-                    
-                    <form th:if="${enrolledProgramIds == null or not enrolledProgramIds.contains(program.id)}"
-                          th:action="@{/member/enroll}" method="post">
+
+                    <form th:action="@{/member/programs/enroll}" method="post">
                         <input type="hidden" name="programId" th:value="${program.id}">
-                        <button type="submit" class="btn-enroll">
-                            <i class="fas fa-plus"></i> Enroll
-                        </button>
+                        <button type="submit" class="btn-enroll">Enroll Now</button>
                     </form>
                 </div>
             </div>
+
+            <div class="empty-state" th:if="${#lists.isEmpty(programs)}">
+                <i class="fas fa-search"></i>
+                <h3>No Programs Found</h3>
+                <p>Check back later for new training plans.</p>
+            </div>
         </div>
-        <div th:replace="~{fragments/footer :: footer}"></div>
     </main>
-    
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>
