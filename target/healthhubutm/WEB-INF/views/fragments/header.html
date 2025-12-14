@@ -1,51 +1,48 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <body>
+    
     <div th:fragment="header">
-        <style>
-            .main-header {
-                background-color: #ffffff;
-                box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-                padding: 15px 30px;
-                position: fixed;
-                top: 0;
-                width: 100%;
-                z-index: 1000;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-            }
-            .nav-brand {
-                font-size: 24px;
-                font-weight: bold;
-                color: #2c3e50;
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                text-decoration: none;
-            }
-            .nav-brand i { color: #2ecc71; } /* Health Green */
-            .nav-links {
-                display: flex;
-                gap: 20px;
-            }
-            .nav-links a {
-                text-decoration: none;
-                color: #555;
-                font-weight: 500;
-                transition: color 0.3s;
-            }
-            .nav-links a:hover { color: #2ecc71; }
-            /* Spacer to prevent content hiding behind fixed header */
-            .header-spacer { height: 70px; } 
-        </style>
+        <header style="background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.05); padding: 15px 0; position: sticky; top: 0; z-index: 1000;">
+            <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center;">
+                
+                <a th:href="@{/}" style="text-decoration: none; display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-heartbeat" style="color: #2ecc71; font-size: 28px;"></i>
+                    <span style="font-size: 24px; font-weight: 800; color: #2c3e50; letter-spacing: -0.5px;">HealthHub</span>
+                </a>
 
-        <header class="main-header">
-            <a href="/" class="nav-brand">
-                <i class="fas fa-heartbeat"></i> HealthHub
-            </a>
+                <nav style="display: flex; align-items: center; gap: 25px;">
+                    
+                    <th:block th:unless="${session.role != null}">
+                        <div style="width: 1px; height: 20px; background: #ddd; margin: 0 5px;"></div>
+                        
+                        <a th:href="@{/login}" style="text-decoration: none; color: #2c3e50; font-weight: 700; font-size: 15px;">Login</a>
+                        <a th:href="@{/register}" style="text-decoration: none; background: #2ecc71; color: white; padding: 8px 20px; border-radius: 50px; font-weight: 600; font-size: 14px; transition: background 0.3s;">
+                            Get Started
+                        </a>
+                    </th:block>
+
+                    <th:block th:if="${session.role != null}">
+                        
+                        <a th:if="${session.role == 'MEMBER'}" th:href="@{/member/dashboard}" 
+                           style="text-decoration: none; color: #555; font-weight: 600; font-size: 15px;">
+                           <i class="fas fa-columns"></i> Dashboard
+                        </a>
+                        
+                        <a th:if="${session.role == 'TRAINER'}" th:href="@{/trainer/dashboard}" 
+                           style="text-decoration: none; color: #555; font-weight: 600; font-size: 15px;">
+                           <i class="fas fa-columns"></i> Trainer Panel
+                        </a>
+
+                        <a th:href="@{/logout}" style="text-decoration: none; color: #e74c3c; font-weight: 600; font-size: 15px; margin-left: 10px; display: flex; align-items: center; gap: 5px;">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </th:block>
+
+                </nav>
+            </div>
         </header>
-        <div class="header-spacer"></div>
     </div>
+
 </body>
 </html>
