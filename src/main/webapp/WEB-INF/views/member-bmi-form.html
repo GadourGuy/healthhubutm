@@ -219,7 +219,7 @@
             <p>Enter your details to calculate your Body Mass Index</p>
         </div>
         
-        <form id="bmi-form" action="BMIServlet" method="POST">
+        <form id="bmi-form" action="/member/bmi" method="POST">
             <div class="form-group">
                 <label for="name">Name <span class="required">*</span></label>
                 <div class="input-with-icon">
@@ -230,10 +230,10 @@
             </div>
             
             <div class="form-group">
-                <label for="birthYear">Year of Birth <span class="required">*</span></label>
+                <label for="yob">Year of Birth <span class="required">*</span></label>
                 <div class="input-with-icon">
                     <i class="fas fa-calendar"></i>
-                    <input type="number" id="birthYear" name="birthYear" class="form-control" 
+                    <input type="number" id="yob" name="yob" class="form-control" 
                            placeholder="e.g. 1990" min="1900" max="2024" required>
                 </div>
             </div>
