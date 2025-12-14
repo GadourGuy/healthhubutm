@@ -88,7 +88,7 @@ public class Person {
     }
 
     //added to correct logic
-    private void calculateBmi() {
+    public void calculateBmi() {
             this.bmi = weight / Math.pow(height, 2);
             categorize();
     }

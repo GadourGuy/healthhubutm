@@ -2,7 +2,8 @@ package com.secj3303.controller;
 
 
 import javax.servlet.http.HttpSession;
-import com.secj3303.dao.UserDaoJdbc;
+
+import com.secj3303.dao.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,7 +18,7 @@ import com.secj3303.model.*;
 public class AuthController {
 
 @Autowired
-private UserDaoJdbc userDaoJdbc;
+private UserDaoHibernate userDaoJdbc;
 
     @GetMapping("/login")
     public String showLoginForm(HttpSession session) {

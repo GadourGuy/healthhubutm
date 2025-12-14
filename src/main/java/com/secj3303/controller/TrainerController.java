@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.secj3303.dao.*;
 import com.secj3303.model.Program;
+import com.secj3303.model.User;
 
 @Controller
 @RequestMapping("/trainer") 
@@ -19,7 +20,7 @@ public class TrainerController {
     @Autowired
     private ProgramDaoHibernate programDaoHibernate;
     @Autowired
-    private UserDao userDao;
+    private UserDaoHibernate userDao;
 
     // --- DASHBOARD ---
     @GetMapping("/dashboard")
@@ -34,11 +35,26 @@ public class TrainerController {
     }
 
     @GetMapping("/assign-program")
-    public String listMembers() {
-        return "trainer-member-list"; // Routes to trainer-member-list.html
+    public String assignProgram(@RequestParam Integer memberId, @RequestParam String programName,HttpSession session) {
+        String role = (String) session.getAttribute("role");
+        if (role == null || (!"trainer".equals(role))) {
+            return "redirect:/login";
+        }
+        try {
+            Program program = programDaoHibernate.findProgramByName(programName);
+            
+            if (program == null) {
+                return "redirect:/trainer/members?error=program_not_found";
+            }
+            
+            return "redirect:/trainer/members?success=assigned";
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/trainer/members?error=database_error";
+        }
     }
 
-    // --- CREATE FITNESS PLAN ---
     @GetMapping("/create-plan")
     public String showPlanForm(HttpSession session) {
 
