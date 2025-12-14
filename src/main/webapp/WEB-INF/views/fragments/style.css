@@ -1,10 +1,61 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Header | UTMHealthHub</title>
-    <style>
+     .utm-footer {
+            background: #1a1a2e;
+            color: white;
+            padding: 25px 40px;
+            margin-top: auto;
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .footer-copyright {
+            color: #b0b0b0;
+            font-size: 15px;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            letter-spacing: 0.3px;
+        }
+        
+        .footer-separator {
+            color: #6a11cb;
+            font-size: 16px;
+            font-weight: 300;
+        }
+        
+        .footer-tagline {
+            color: #d0d0d0;
+            font-size: 15px;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+        
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            .utm-footer {
+                padding: 20px;
+            }
+            
+            .footer-container {
+                flex-direction: column;
+                gap: 8px;
+                text-align: center;
+            }
+            
+            .footer-separator {
+                display: none;
+            }
+            
+            .footer-copyright, .footer-tagline {
+                font-size: 14px;
+            }
+        }
+
 
         .utm-header {
             background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
@@ -114,18 +165,4 @@
                 font-size: 16px;
             }
         }
-    </style>
-</head>
-<body>
-    <header class="utm-header">
-        <div class="header-container">
-            <a href="" class="header-title">UTMHealthHub</a>
-            <nav class="header-nav">
-                <a href="" class="header-link active">Home</a>
-                <a href="" class="header-link">Contact</a>
-                <a href="" class="header-link">About Us</a>
-            </nav>
-        </div>
-    </header>
-</body>
-</html>
+

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Programs | UTMHealthHub</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/fragments/style.css}">
     <style>
 
         * {
@@ -219,7 +220,7 @@
 </head>
 <body>
 
-    
+    <div th:replace="~{fragments/header :: header}"></div>
     <main class="main-content">
         <div class="page-header">
             <h1>My Registered Programs</h1>
@@ -290,6 +291,7 @@
                 </tbody>
             </table>
         </div>
+        <div th:replace="~{fragments/footer :: footer}"></div>
     </main>
 
 </body>
