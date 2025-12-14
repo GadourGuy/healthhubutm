@@ -10,39 +10,33 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/member")
 public class MemberController {
 
-    // --- DASHBOARD ---
     @GetMapping("/dashboard")
     public String showDashboard() {
-        return "member-dashboard"; // Routes to member-dashboard.html
+        return "member-dashboard";
     }
 
-    // --- BMI MODULE ---
     @GetMapping("/bmi")
     public String showBmiForm() {
-        return "member-bmi-form"; // Routes to member-bmi-form.html
+        return "member-bmi-form";
     }
 
     @PostMapping("/bmi")
     public String calculateBmi() {
-        // Logic to calculate and save BMI will go here
         return "redirect:/member/dashboard";
     }
 
-    // --- BROWSE PROGRAMS ---
     @GetMapping("/programs")
     public String listPrograms(Model model) {
-        return "member-program-list"; // Routes to member-program-list.html
+        return "member-program-list";
     }
 
     @PostMapping("/programs/enroll")
     public String enrollInProgram() {
-        // Logic to enroll user will go here
         return "redirect:/member/plans";
     }
 
-    // --- MY PERSONAL PLANS ---
     @GetMapping("/plans")
     public String showMyPlans() {
-        return "member-my-plans"; // Routes to member-my-plans.html
+        return "member-my-plans";
     }
 }

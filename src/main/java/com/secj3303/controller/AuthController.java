@@ -3,6 +3,8 @@ package com.secj3303.controller;
 
 import javax.servlet.http.HttpSession;
 import com.secj3303.dao.UserDaoJdbc;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,20 +16,30 @@ import com.secj3303.model.*;
 @Controller
 public class AuthController {
 
+@Autowired
+private UserDaoJdbc userDaoJdbc;
 
     @GetMapping("/login")
     public String showLoginForm(HttpSession session) {
-        String role = (String) session.getAttribute("role");
-        if (role != null) {
-            return redirectBasedOnRole(role);
-        }
-        return "login";
+    String role = (String) session.getAttribute("role");
+    if (role != null) {
+        return redirectBasedOnRole(role);
+    }
+    return "login";
     }
 
     @PostMapping("/login")
-    public String processLogin( @RequestParam String email, @RequestParam String password, HttpSession session) { 
-        
-    User user = UserDaoJdbc.findByEmailAndPassword(email, password);
+    public String processLogin(@RequestParam String email, @RequestParam String password, HttpSession session) { 
+    
+    User user = null; 
+    
+    try {
+        user = userDaoJdbc.findByEmailAndPassword(email, password);
+    } catch (Exception e) {
+        e.printStackTrace();
+        return "redirect:/login?error=true";
+    }
+    
     if (user != null && user.getId() != null) {
         session.setAttribute("email", user.getEmail());
         session.setAttribute("role", user.getRole());
@@ -36,7 +48,7 @@ public class AuthController {
     } else {
         return "redirect:/login?error=true";
     }   
-    }
+}
 
     // --- LOGOUT ---
     @GetMapping("/logout")

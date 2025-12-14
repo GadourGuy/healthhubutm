@@ -425,7 +425,6 @@
             </div>
         </div>
 
-        <!-- No Current Result Message -->
         <div class="current-result-card" th:unless="${currentBmi != null}">
             <div class="empty-state">
                 <i class="fas fa-calculator"></i>
@@ -436,8 +435,7 @@
                 </a>
             </div>
         </div>
-        
-        <!-- BMI History Section -->
+
         <div class="history-section">
             <div class="section-header">
                 <h2>BMI Calculation History</h2>
@@ -445,8 +443,7 @@
                     <span th:text="${#lists.size(bmiHistory)}">0</span> records found
                 </div>
             </div>
-            
-            <!-- If there is history -->
+
             <table class="history-table" th:if="${not #lists.isEmpty(bmiHistory)}">
                 <thead>
                     <tr>
@@ -479,8 +476,7 @@
                     </tr>
                 </tbody>
             </table>
-            
-            <!-- Empty state if no history -->
+
             <div class="empty-state" th:if="${#lists.isEmpty(bmiHistory)}">
                 <i class="fas fa-chart-line"></i>
                 <h3>No BMI History Found</h3>
