@@ -6,7 +6,7 @@
     <title>My Programs | UTMHealthHub</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Reset and Base */
+
         * {
             margin: 0;
             padding: 0;
@@ -39,8 +39,7 @@
             color: #666;
             font-size: 16px;
         }
-        
-        /* Empty State */
+
         .empty-state {
             text-align: center;
             padding: 60px 20px;
@@ -82,8 +81,7 @@
         .btn-browse:hover {
             opacity: 0.9;
         }
-        
-        /* Programs Table */
+
         .programs-table {
             width: 100%;
             background: white;
@@ -140,8 +138,7 @@
         tr:hover {
             background-color: #f8f9fa;
         }
-        
-        /* Program Info */
+
         .program-name {
             font-weight: 600;
             color: #2c3e50;
@@ -153,8 +150,7 @@
             color: #6c757d;
             line-height: 1.4;
         }
-        
-        /* Actions */
+
         .actions {
             display: flex;
             gap: 8px;
@@ -183,8 +179,7 @@
         .action-btn:hover {
             opacity: 0.8;
         }
-        
-        /* Duration and Fee */
+
         .program-meta {
             display: flex;
             gap: 15px;
@@ -202,8 +197,7 @@
         .meta-item i {
             color: #2575fc;
         }
-        
-        /* Responsive */
+
         @media (max-width: 768px) {
             .programs-table {
                 overflow-x: auto;
@@ -224,16 +218,14 @@
     </style>
 </head>
 <body>
-    <!-- Header would be here -->
+
     
     <main class="main-content">
-        <!-- Page Header -->
         <div class="page-header">
             <h1>My Registered Programs</h1>
             <p>View and manage your enrolled fitness programs</p>
         </div>
-        
-        <!-- Empty State - When member has no registered programs -->
+
         <div class="empty-state" th:if="${#lists.isEmpty(userPrograms)}">
             <i class="fas fa-clipboard-list"></i>
             <h3>No Registered Programs</h3>
@@ -242,8 +234,7 @@
                 <i class="fas fa-search"></i> Browse Available Programs
             </a>
         </div>
-        
-        <!-- Programs Table - When member has registered programs -->
+
         <div class="programs-table" th:unless="${#lists.isEmpty(userPrograms)}">
             <div class="table-header">
                 <h2>My Programs</h2>
@@ -262,7 +253,6 @@
                 </thead>
                 <tbody>
                     <tr th:each="userProgram : ${userPrograms}">
-                        <!-- Program Details -->
                         <td>
                             <div class="program-name" th:text="${userProgram.program.name}">
                                 Weight Loss Program
@@ -281,13 +271,11 @@
                                 </div>
                             </div>
                         </td>
-                        
-                        <!-- Enrollment Date -->
+
                         <td th:text="${#dates.format(userProgram.enrollmentDate, 'dd MMM yyyy')}">
                             15 Oct 2024
                         </td>
-                        
-                        <!-- Actions -->
+
                         <td>
                             <div class="actions">
                                 <button class="action-btn btn-view">
@@ -303,7 +291,6 @@
             </table>
         </div>
     </main>
-    
-    <!-- Footer would be here -->
+
 </body>
 </html>

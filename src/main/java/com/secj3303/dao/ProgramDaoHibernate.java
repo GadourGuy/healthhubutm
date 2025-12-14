@@ -85,4 +85,21 @@ public class ProgramDaoHibernate implements ProgramDao {
             session.close();
         }
     }
+
+    @Override
+    public Program findProgramByName(String name) {
+        Session session = sessionFactory.openSession();
+        try {
+            String hql = "FROM Program WHERE LOWER(name) = LOWER(:programName)";
+            Program program = session.createQuery(hql, Program.class)
+                    .setParameter("programName", name.trim())
+                    .uniqueResult();
+            return program;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            session.close();
+        }
+    }
 }

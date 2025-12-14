@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class UserDaoJdbc {
+public class UserDaoJdbc implements UserDao {
 
     private final DataSource dataSource;
     

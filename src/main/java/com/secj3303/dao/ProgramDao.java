@@ -9,4 +9,5 @@ public interface ProgramDao {
     Program findById(Integer id);
     void save(Program program); // insert or update
     void delete(Integer id);
+    Program findProgramByName(String name);
 }

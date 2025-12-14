@@ -51,9 +51,12 @@ private UserDaoJdbc userDaoJdbc;
 }
 
     // --- LOGOUT ---
-    @GetMapping("/logout")
-    public String logout() {
-        return "redirect:/login";
+    @GetMapping("/register")
+    public String showRegisterForm(HttpSession session) {
+        if (session.getAttribute("email") != null) {
+            return "redirect:/member/dashboard";
+        }
+        return "register";
     }
 
     // --- REGISTER ---
@@ -63,8 +66,33 @@ private UserDaoJdbc userDaoJdbc;
     }
 
     @PostMapping("/register")
-    public String processRegister() {
-        return "redirect:/login";
+    public String processRegister(@RequestParam String firstName, @RequestParam String lastName, @RequestParam String email, @RequestParam String password, @RequestParam String confirmPassword, HttpSession session) {
+        if (!password.equals(confirmPassword)) {
+            return "redirect:/register?error=password_mismatch";
+        }
+        
+        if (userDaoJdbc.emailExists(email)) {
+            return "redirect:/register?error=email_exists";
+        }
+        
+        try {
+            User newUser = new User(firstName, lastName, email, password);
+
+            newUser.setRole("MEMBER");
+            
+            userDaoJdbc.insert(newUser);
+
+            User savedUser = userDaoJdbc.findByEmailAndPassword(email, password);
+            session.setAttribute("email", savedUser.getEmail());
+            session.setAttribute("role", savedUser.getRole());
+            session.setAttribute("userId", savedUser.getId());
+            
+            return "redirect:/member/dashboard";
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/register?error=database_error";
+        }
     }
 
     //added to ease up on them things yeah

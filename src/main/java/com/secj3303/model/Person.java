@@ -10,9 +10,9 @@ public class Person {
     private int id;
     private String[] interest;
 
-    public Person() {
-    }
+    public Person(){
 
+    }
     public Person(String name, int yob, double weight, double height, String[] interest) {
         this.name = name;
         this.yob = yob;
