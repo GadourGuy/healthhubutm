@@ -1,11 +1,298 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Programs | UTMHealthHub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/fragments/style.css}">
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+        
+        body {
+            min-height: 100vh;
+            background-color: #f5f7fa;
+        }
+        
+        .main-content {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        
+        .page-header {
+            margin-bottom: 40px;
+        }
+        
+        .page-header h1 {
+            font-size: 32px;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .page-header p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .empty-state i {
+            font-size: 64px;
+            color: #adb5bd;
+            margin-bottom: 20px;
+        }
+        
+        .empty-state h3 {
+            color: #495057;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+        
+        .empty-state p {
+            color: #6c757d;
+            max-width: 500px;
+            margin: 0 auto 20px;
+            line-height: 1.6;
+        }
+        
+        .btn-browse {
+            display: inline-block;
+            background: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: opacity 0.3s;
+        }
+        
+        .btn-browse:hover {
+            opacity: 0.9;
+        }
+
+        .programs-table {
+            width: 100%;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .table-header {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .table-header h2 {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .program-count {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        thead {
+            background-color: #f8f9fa;
+        }
+        
+        th {
+            padding: 15px 20px;
+            text-align: left;
+            color: #495057;
+            font-weight: 600;
+            font-size: 14px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        td {
+            padding: 15px 20px;
+            border-bottom: 1px solid #e9ecef;
+            color: #495057;
+        }
+        
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .program-name {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .program-desc {
+            font-size: 13px;
+            color: #6c757d;
+            line-height: 1.4;
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .action-btn {
+            padding: 6px 12px;
+            border-radius: 4px;
+            border: none;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-view {
+            background: #e9ecef;
+            color: #495057;
+        }
+        
+        .btn-cancel {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .action-btn:hover {
+            opacity: 0.8;
+        }
+
+        .program-meta {
+            display: flex;
+            gap: 15px;
+            margin-top: 8px;
+        }
+        
+        .meta-item {
+            font-size: 12px;
+            color: #6c757d;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .meta-item i {
+            color: #2575fc;
+        }
+
+        @media (max-width: 768px) {
+            .programs-table {
+                overflow-x: auto;
+            }
+            
+            table {
+                min-width: 600px;
+            }
+            
+            .actions {
+                flex-direction: column;
+            }
+            
+            .main-content {
+                padding: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
-	<h1>Member Plans</h1>
+
+    <div th:replace="~{fragments/header :: header}"></div>
+    <main class="main-content">
+        <div class="page-header">
+            <h1>My Registered Programs</h1>
+            <p>View and manage your enrolled fitness programs</p>
+        </div>
+
+        <div class="empty-state" th:if="${#lists.isEmpty(userPrograms)}">
+            <i class="fas fa-clipboard-list"></i>
+            <h3>No Registered Programs</h3>
+            <p>You haven't enrolled in any fitness programs yet.</p>
+            <a href="/member/fitness-plans" class="btn-browse">
+                <i class="fas fa-search"></i> Browse Available Programs
+            </a>
+        </div>
+
+        <div class="programs-table" th:unless="${#lists.isEmpty(userPrograms)}">
+            <div class="table-header">
+                <h2>My Programs</h2>
+                <div class="program-count">
+                    <span th:text="${#lists.size(userPrograms)}">0</span> programs
+                </div>
+            </div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Program Details</th>
+                        <th>Enrollment Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="userProgram : ${userPrograms}">
+                        <td>
+                            <div class="program-name" th:text="${userProgram.program.name}">
+                                Weight Loss Program
+                            </div>
+                            <div class="program-desc" th:text="${userProgram.program.description}">
+                                Program description...
+                            </div>
+                            <div class="program-meta">
+                                <div class="meta-item">
+                                    <i class="fas fa-calendar-week"></i>
+                                    <span th:text="${userProgram.program.durationWeeks} + ' weeks'">12 weeks</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-money-bill-wave"></i>
+                                    <span th:text="'RM ' + ${userProgram.program.monthlyFee}">RM 299.99/month</span>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td th:text="${#dates.format(userProgram.enrollmentDate, 'dd MMM yyyy')}">
+                            15 Oct 2024
+                        </td>
+
+                        <td>
+                            <div class="actions">
+                                <button class="action-btn btn-view">
+                                    <i class="fas fa-eye"></i> View Details
+                                </button>
+                                <button class="action-btn btn-cancel">
+                                    <i class="fas fa-times"></i> Unenroll
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div th:replace="~{fragments/footer :: footer}"></div>
+    </main>
+
 </body>
 </html>

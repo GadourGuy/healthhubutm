@@ -40,9 +40,6 @@
     <property name="password" value=""/>
 </bean>
 
-<bean id="personDaoJdbc" class="com.secj3303.dao.PersonDaoJdbc">
-    <constructor-arg ref="dataSource"/>
-</bean>
 
 <!-- ========================= -->
     <!--  Hibernate SessionFactory  -->

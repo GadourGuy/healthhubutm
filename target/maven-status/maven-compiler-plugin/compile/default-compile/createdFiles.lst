@@ -1,8 +1,13 @@
 com\secj3303\controller\AdminController.class
-com\secj3303\dao\PersonDaoJdbc.class
 com\secj3303\dao\ProgramDaoHibernate.class
 com\secj3303\dao\ProgramDao.class
-com\secj3303\model\Person.class
 com\secj3303\dao\PersonDao.class
-com\secj3303\controller\AuthController.class
 com\secj3303\model\Program.class
+com\secj3303\controller\TrainerController.class
+com\secj3303\model\User.class
+com\secj3303\dao\UserDaoHibernate.class
+com\secj3303\controller\MemberController.class
+com\secj3303\dao\PersonDaoHibernate.class
+com\secj3303\model\Person.class
+com\secj3303\dao\UserDao.class
+com\secj3303\controller\AuthController.class

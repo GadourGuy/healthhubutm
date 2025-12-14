@@ -3,16 +3,14 @@ package com.secj3303.controller;
 
 import javax.servlet.http.HttpSession;
 
-import com.secj3303.dao.*;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.secj3303.model.*;
+import com.secj3303.dao.UserDaoHibernate;
+import com.secj3303.model.User;
 
 @Controller
 public class AuthController {
@@ -60,11 +58,7 @@ private UserDaoHibernate userDaoJdbc;
         return "register";
     }
 
-    // --- REGISTER ---
-    @GetMapping("/register")
-    public String showRegisterForm(Model model) {
-        return "register";
-    }
+    
 
     @PostMapping("/register")
     public String processRegister(@RequestParam String firstName, @RequestParam String lastName, @RequestParam String email, @RequestParam String password, @RequestParam String confirmPassword, HttpSession session) {
