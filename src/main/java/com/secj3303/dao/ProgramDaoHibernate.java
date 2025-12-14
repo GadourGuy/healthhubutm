@@ -16,27 +16,28 @@ public class ProgramDaoHibernate implements ProgramDao {
     @Autowired
     private SessionFactory sessionFactory;
 
-    // For the time being/beginning: we explicitly open/close session
-    private Session openSession() {
-        return sessionFactory.openSession();
-    }
-
     @Override
     public List<Program> findAll() {
         Session session = sessionFactory.openSession();
-        List<Program> list = session
-                .createQuery("FROM Program", Program.class) // HQL
-                .list();
+        List<Program> list = session.createQuery("from Program", Program.class).list();
         session.close();
         return list;
     }
 
     @Override
-    public Program findById(Integer id) {
+    public Program findById(int id) {
         Session session = sessionFactory.openSession();
-        // JDBC equivalent: SELECT * FROM program WHERE id = ?
         Program program = session.get(Program.class, id);
-        
+        session.close();
+        return program;
+    }
+
+    @Override
+    public Program findProgramByName(String name) {
+        Session session = sessionFactory.openSession();
+        Program program = session.createQuery("FROM Program WHERE name = :name", Program.class)
+                .setParameter("name", name)
+                .uniqueResult();
         session.close();
         return program;
     }
@@ -45,13 +46,9 @@ public class ProgramDaoHibernate implements ProgramDao {
     public void save(Program program) {
         Session session = sessionFactory.openSession();
         Transaction tx = null;
-        
         try {
             tx = session.beginTransaction();
-            
-            // JDBC equivalent: INSERT INTO program ... (or UPDATE if it exists)
-            session.saveOrUpdate(program); 
-            
+            session.saveOrUpdate(program);
             tx.commit();
         } catch (Exception e) {
             if (tx != null) tx.rollback();
@@ -62,42 +59,24 @@ public class ProgramDaoHibernate implements ProgramDao {
     }
 
     @Override
-    public void delete(Integer id) {
+    public void delete(int id) {
         Session session = sessionFactory.openSession();
         Transaction tx = null;
-
         try {
             tx = session.beginTransaction();
-            
-            // To delete in Hibernate, we usually need the object first
             Program program = session.get(Program.class, id);
             
             if (program != null) {
-                // JDBC equivalent: DELETE FROM program WHERE id = ?
+                session.createQuery("DELETE FROM UserProgram up WHERE up.program.id = :pid")
+                       .setParameter("pid", id)
+                       .executeUpdate();
+                
                 session.delete(program);
             }
-            
             tx.commit();
         } catch (Exception e) {
             if (tx != null) tx.rollback();
             e.printStackTrace();
-        } finally {
-            session.close();
-        }
-    }
-
-    @Override
-    public Program findProgramByName(String name) {
-        Session session = sessionFactory.openSession();
-        try {
-            String hql = "FROM Program WHERE LOWER(name) = LOWER(:programName)";
-            Program program = session.createQuery(hql, Program.class)
-                    .setParameter("programName", name.trim())
-                    .uniqueResult();
-            return program;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
         } finally {
             session.close();
         }

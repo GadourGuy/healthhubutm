@@ -1,12 +1,14 @@
 package com.secj3303.dao;
 
-import com.secj3303.model.User;
+import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import java.util.List;
+
+import com.secj3303.model.User;
 
 @Repository
 public class UserDaoHibernate implements UserDao {
@@ -14,7 +16,6 @@ public class UserDaoHibernate implements UserDao {
     @Autowired
     private SessionFactory sessionFactory;
 
-    // For the time being/beginning: we explicitly open/close session
     private Session openSession() {
         return sessionFactory.openSession();
     }
@@ -43,7 +44,6 @@ public class UserDaoHibernate implements UserDao {
         try {
             tx = session.beginTransaction();
             
-            // Set default role if not set
             if (user.getRole() == null) {
                 user.setRole("MEMBER");
             }
@@ -129,7 +129,6 @@ public class UserDaoHibernate implements UserDao {
         }
     }
 
-    // Additional method to find users by role
     public List<User> findByRole(String role) {
         Session session = sessionFactory.openSession();
         List<User> list = session
