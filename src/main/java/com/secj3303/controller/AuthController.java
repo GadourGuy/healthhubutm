@@ -17,6 +17,19 @@ public class AuthController {
     @Autowired
     private UserDaoHibernate userDaoJdbc;
 
+    @GetMapping("/")
+    public String root(HttpSession session) {
+        String role = (String) session.getAttribute("role");
+        
+        // 1. If user is already logged in, send them to their specific dashboard
+        if (role != null) {
+            return redirectBasedOnRole(role);
+        }
+        
+        // 2. If user is NOT logged in, redirect them to the login page
+        return "redirect:/login";
+    }
+
     @GetMapping("/login")
     public String showLoginForm(HttpSession session) {
         String role = (String) session.getAttribute("role");
